@@ -1,7 +1,7 @@
 # IoT Network Protocol Analysis
 
-Network traffic analysis lab using Wireshark to capture, dissect, and validate
-secure IoT communication protocols across a full CDA-GDA-Cloud architecture.
+Network traffic analysis lab using Wireshark: how CoAP and MQTT behave under packet loss between two VMs,
+plus a basic HTTP-over-TCP capture.
 
 **Key result:** with 10% packet loss, MQTT QoS 2 (exactly once) latency rose from 0.47 ms to 1.88 ms, while QoS 0
 stayed flat at about 0.27 ms. More handshake steps = more delay when packets are lost.
@@ -25,10 +25,9 @@ Full write-ups: [`Project-MQTT-CoAP.pdf`](Project-MQTT-CoAP.pdf) (TELE 6510 proj
 
 | Protocol | What Was Captured |
 |----------|------------------|
-| MQTT | All 14 control packet types including CONNECT, PUBLISH, SUBSCRIBE |
-| TLS/SSL | Full handshake sequence and certificate exchange |
-| TCP/IP | Connection establishment, data transfer, teardown |
-| CoAP | Constrained device request/response patterns |
+| CoAP | Confirmable (GET → ACK 2.05) and non-confirmable exchanges at 0, 3, 5 and 10% loss |
+| MQTT | PUBLISH at QoS 0, 1 and 2, with the PUBACK and PUBREC → PUBREL → PUBCOMP handshakes, under the same loss levels |
+| HTTP over TCP | Browsing capture: an HTTP GET answered by `HTTP/1.1 200 OK` (frame 16545, TTL 64) |
 
 ## Results
 
@@ -73,7 +72,7 @@ transactions, read from Wireshark timestamps.
 | ⚠️ | Only screenshots are in the repo; the raw `.pcap` capture files are not included. |
 
 ## 🔧 Technologies Used
-`Wireshark` `MQTT` `TLS/SSL` `TCP/IP` `CoAP` `Mosquitto` `libcoap` `QEMU/KVM`
+`Wireshark` `MQTT` `CoAP` `HTTP` `TCP/IP` `Mosquitto` `libcoap` `QEMU/KVM`
 
 ## 🎯 Skills Demonstrated
 - Deep packet inspection and protocol dissection
